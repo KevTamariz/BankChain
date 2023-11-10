@@ -1,0 +1,45 @@
+<div class="container__body">
+  <div class="caja__001"></div>
+  <div class="caja__002">
+    <h2>Aluver</h2>
+
+    <h3 *ngIf="loadedBalance === true">Cantidad Total ETH: <span>{{balance}}</span></h3>
+    <button type="button" class="btn" (click)="updateBalance()">Consultar Saldo</button>
+
+    <div class="row">
+      <div class="col-12">
+        <mat-tab-group mat-align-tabs="center" color="warn">
+          <mat-tab label="Depositar">
+            <div class="container my-2">
+              <div class="row text-center">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="deposit_amount">Ingrese una cantidad</label>
+                    <input type="number"
+                           placeholder="Ej: 10"
+                           class="form-control"
+                           id="deposit_amount" name="quantity"
+                           min="0.01" step="0.01" (change)="depositAmount = $event.target.value">
+                           <button type="button" class="btn btn-dark" (click)="depositar()">Depositar</button>
+                          </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Retirar">
+            <div class="container my-2">
+              <div class="row my-4">
+                <div class="col">
+                  <div class="form-group">
+                    <button type="button" class="btn btn-outline-danger" (click)="retirar()">Retirar</button>  
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>
