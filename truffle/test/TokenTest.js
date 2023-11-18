@@ -101,7 +101,7 @@ contract('Token and DBank', ([deployer, user]) => {
 
       assert.equal(0, Number(tokenBalance0));
       
-      await dBank.deposit({value: 10**16, from: user});
+      await dBank.deposit({value: 10**16, from: user, gas: 6721975});
       await helpers.wait(4);
       await dBank.withdraw({from: user});
       const tokenBalance1 = await token.balanceOf(user);
@@ -110,7 +110,7 @@ contract('Token and DBank', ([deployer, user]) => {
 
     it('DBank reduces its balance after withdraw', async() => {
       const dBankBalance = await token.balanceOf(user);
-      await dBank.deposit({value: 10**16, from: user});
+      await dBank.deposit({value: 10**16, from: user, gas: 6721975});   
       const initialBalance = await web3.eth.getBalance(dBank.address);
       await helpers.wait(4);
       await dBank.withdraw({from: user});

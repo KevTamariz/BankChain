@@ -29,7 +29,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -48,7 +49,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -67,14 +69,16 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
       "name": "deposit",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [],
@@ -93,7 +97,7 @@
   "sourceMap": "93:1209:4:-:0;;;302:60;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;348:6;340:5;;:14;;;;;;;;;;;;;;;;;;302:60;93:1209;;;;;;",
   "deployedSourceMap": "93:1209:4:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;195:46;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;729:570;;;;;;;;;;;;;:::i;:::-;;144:43;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;374:347;;;:::i;:::-;;249:44;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;195:46;;;;;;;;;;;;;;;;;:::o;729:570::-;803:4;776:31;;:11;:23;788:10;776:23;;;;;;;;;;;;;;;;;;;;;;;;;:31;;;768:82;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;863:16;900:12;:24;913:10;900:24;;;;;;;;;;;;;;;;882:15;:42;863:61;;935:22;1001:4;972:14;:26;987:10;972:26;;;;;;;;;;;;;;;;:33;;;;;;960:8;:46;935:71;;1017:13;1047:17;1033:11;:31;1017:47;;1077:10;:19;;:47;1097:14;:26;1112:10;1097:26;;;;;;;;;;;;;;;;1077:47;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1135:5;;;;;;;;;;:10;;;1146;1158:8;1135:32;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1209:1;1180:14;:26;1195:10;1180:26;;;;;;;;;;;;;;;:30;;;;1248:1;1221:12;:24;1234:10;1221:24;;;;;;;;;;;;;;;:28;;;;1286:5;1260:11;:23;1272:10;1260:23;;;;;;;;;;;;;;;;:31;;;;;;;;;;;;;;;;;;729:570;;;:::o;144:43::-;;;;;;;;;;;;;;;;;;;;;;:::o;374:347::-;454:5;427:32;;:11;:23;439:10;427:23;;;;;;;;;;;;;;;;;;;;;;;;;:32;;;419:74;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;525:4;512:9;:17;;504:64;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;610:9;581:14;:26;596:10;581:26;;;;;;;;;;;;;;;:38;;;;656:4;630:11;:23;642:10;630:23;;;;;;;;;;;;;;;;:30;;;;;;;;;;;;;;;;;;698:15;671:12;:24;684:10;671:24;;;;;;;;;;;;;;;:42;;;;374:347::o;249:44::-;;;;;;;;;;;;;;;;;:::o",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity >=0.6.0 <0.8.0;\r\n\r\nimport \"./Token.sol\";\r\n\r\ncontract DBank {\r\n    Token private token;\r\n\r\n     mapping(address => bool) public isDeposited;\r\n     mapping(address => uint) public etherBalanceOf;\r\n     mapping(address => uint) public depositStart;\r\n\r\n    constructor (Token _token) {\r\n        token = _token;\r\n    }\r\n    \r\n    function deposit() payable public {\r\n        require(isDeposited[msg.sender] == false, 'Error, deposit already active');\r\n        require(msg.value >= 1e16, 'Error, deposit must be >= 0.01 ETH');\r\n\r\n        etherBalanceOf[msg.sender] = msg.value;\r\n        isDeposited[msg.sender] = true;\r\n        depositStart[msg.sender] = block.timestamp;\r\n    }\r\n\r\n    function withdraw() public  {\r\n        require(isDeposited[msg.sender] == true, 'Error, user has no funds in the dBank.');\r\n\r\n        uint depositTime = block.timestamp - depositStart[msg.sender];\r\n        uint interestPerSecond = 31668017 * (etherBalanceOf[msg.sender] / 1e16);\r\n        uint interest = depositTime * interestPerSecond;\r\n\r\n        msg.sender.transfer(etherBalanceOf[msg.sender]);\r\n        token.mint(msg.sender, interest);\r\n\r\n        etherBalanceOf[msg.sender] = 0;\r\n        depositStart[msg.sender] = 0;\r\n        isDeposited[msg.sender] = false;\r\n    }\r\n}",
-  "sourcePath": "C:\\Users\\lina2\\WebstormProjects\\DBank\\truffle\\contracts\\DBank.sol",
+  "sourcePath": "C:\\Users\\kevin\\proyectos\\BankChain\\truffle\\contracts\\DBank.sol",
   "ast": {
     "absolutePath": "project:/contracts/DBank.sol",
     "exportedSymbols": {
@@ -4186,12 +4190,13 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x2F3C0a6D5d3a6A9E762d7cD9DbAA1DC993814f81",
-      "transactionHash": "0x59c846aabf15fe36c07f46a43cab24edcb4a50572ce0d88d6efa6cf89ce4027d"
+      "address": "0xEfA17E2b24d462FA7befCecDdf6D47B2FadF08a7",
+      "transactionHash": "0x209910dd6dc76399718064024920d93cc769ae0704879452c77559fd72742452"
     }
   },
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2022-12-13T21:11:49.325Z",
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2023-11-18T15:29:21.856Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {},
